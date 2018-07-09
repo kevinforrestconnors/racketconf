@@ -13,28 +13,28 @@
 ;; (define bye "good")
 ;; ...        
 
+(println "compile time")
+
 (define-syntax (define-world* stx)
   (syntax-parse stx
     [(_ the-identifier:id ...)
      (let ([len (length (syntax->list stx))])
        #`(define-values (the-identifier ...) (apply values #,(datum->syntax stx (cons 'list (build-list (- len 1) values))))))]))
 
+(define-world* won too tree)
+won too tree
+
+(println "run time")
 
 (define-syntax (def-worlds stx)
   (syntax-parse stx
     [(_ x ...)
      #'(begin
-         (define counter 0)
+         (define counter -1)
          (define x (begin (set! counter (+ counter 1)) counter))
          ...)]))
-
-(println "run time")
 
 (def-worlds one two three)
 one two three
 
-(println "compile time")
-
-(define-world* world* won too tree)
-won too tree
 
